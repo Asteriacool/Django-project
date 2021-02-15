@@ -1,0 +1,66 @@
+# 20200215配置路由urls
+
+- mysite此时相当于是主文件的入口文件/配置文件
+
+- 新建一个app以实现网页内其他内容的展示
+
+  在mysite的路径下
+
+  ```
+  python manage.py startapp name
+  ```
+
+  创建后的项目与mysite同级
+
+  - 
+
+- 每当创建一个新的app，需要在主文件的setting,py中的INSTALLED APPS中对新创建的文件进行关联
+
+  ```python
+  INSTALLED_APPS = [
+      'django.contrib.admin',
+      'django.contrib.auth',
+      'django.contrib.contenttypes',
+      'django.contrib.sessions',
+      'django.contrib.messages',
+      'django.contrib.staticfiles',
+      'mainbody',#mainbody是新定义的app名字，是需要关联的对象
+  ]
+  ```
+
+- 在mainbody中创建urls.py的文件，内容为：
+
+```python
+from django.urls import path
+
+urlpatterns = [
+
+]
+```
+
+
+
+- 访问mysite中的urls.py，对urls进行关联，使得最终能够跳转到目标页面（自己所设定的页面）
+
+> URL（Uniform Resoure Locator：统bai一资源定位器）是WWW页的地址，它从左到右由下述部分组成：
+> ·Internet资源类型（scheme）：指出WWW客户程序用来操作的工具。如“http：//”表示WWW服务器，“ftp：//”表示FTP服务器，“gopher：//”表示Gopher服务器，而“new：”表示Newgroup新闻组。
+> ·服务器地址（host）：指出WWW页所在的服务器域名。
+> ·端口（port）：有时（并非总是这样），对某些资源的访问来说，需给出相应的服务器提供端口号。
+> ·路径（path）：指明服务器上某资源的位置（其格式与DOS系统中的格式一样，通常有目录/子目录/文件名这样结构组成）。与端口一样，路径并非总是需要的。
+> URL地址格式排列为：scheme：//host：port/path，例如http：//www.sohu.com/domain/HXWZ就是一个典型的URL地址。
+
+​     更改urls中的内容，使得自定义的app内容得以展示——在访问初始地址localhost:8000的时候，能够访问include中的，即mainbody.urls所指向的内容
+
+```Python
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('mainbody.urls')),   #与mainbody中的urls文件进行关联，指明方向
+]
+```
+
+
+
+summary：实现一种模块（app）化的开发，不会将所有的功能都部署到主文件中去，避免项目变得冗余，将目标要实现的内容都放在mainboy这个文件中去
